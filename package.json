@@ -1,0 +1,82 @@
+{
+   "name": "alarm-clock",
+   "version": "1.0.0",
+   "private": true,
+   "scripts": {
+      "js": "simplifyify \"source/js/index.js\" -o \"public/js/bundle.min.js\" -d",
+      "js:watch": "npm run js -- --watch",
+      "js:prod": "npm run js -- --minify",
+      "js:lint": "standard \"source/js/**/*.js\" --verbose | snazzy",
+      "css": "stylus -m source/css/index.styl --include-css -I node_modules -o public/css/style.min.css -u rupture -u poststylus --with \"['lost']\"",
+      "css:autoprefixer": "npm run css -- -u autoprefixer-stylus --with \"{browsers: ['> 1%']}\"",
+      "css:prod": "npm run css:autoprefixer -- -u csso-stylus",
+      "img": "copy-cli \"source/img/**/*\" \"public/img\"",
+      "img:prod": "imagemin \"source/img/**/*\" --out-dir=public/img",
+      "styleguide": "styleguide-plus \"source/css/**/*.styl\" -o public/styleguide",
+      "php": "php -S localhost:8000",
+      "browsersync": "browser-sync start --proxy \"http://localhost:8000\" -f=\"public,!**/*.map\" --no-ghost-mode --reload-delay 100 --startPath \"public/\"",
+      "serve": "parallelshell \"npm run php\" \"npm run browsersync\"",
+      "watch": "parallelshell \"npm run js:watch\" \"npm-watch\"",
+      "dev": "parallelshell \"npm run serve\" \"npm run watch\"",
+      "prebuild": "npm run js:lint",
+      "build": "parallelshell \"npm run js:prod\" \"npm run css:prod\" \"npm run img:prod\" && echo \"MANDA BALA NO DEPLOY!\""
+   },
+   "watch": {
+      "css": {
+         "patterns": [
+            "source/css"
+         ],
+         "extensions": "styl"
+      },
+      "img": {
+         "patterns": [
+            "source/img"
+         ],
+         "extensions": "jpg,jpeg,png,svg,gif"
+      }
+   },
+   "standard": {
+      "globals": [
+         "jQuery",
+         "$"
+      ]
+   },
+   "browserify": {
+      "transform": [
+         [
+            "babelify",
+            {
+               "presets": [
+                  "es2015"
+               ]
+            }
+         ]
+      ]
+   },
+   "devDependencies": {
+      "autoprefixer-stylus": "^0.10.0",
+      "babel-preset-es2015": "^6.22.0",
+      "babelify": "^7.3.0",
+      "browser-sync": "^2.16.0",
+      "copy": "github:gsantiago/copy",
+      "csso-stylus": "0.0.3",
+      "imagemin-cli": "^3.0.0",
+      "lost": "^7.1.0",
+      "lost-stylus": "^0.1.2",
+      "npm-watch": "^0.1.6",
+      "parallelshell": "^2.0.0",
+      "poststylus": "^0.2.3",
+      "rupture": "^0.6.1",
+      "simplifyify": "^3.2.1",
+      "snazzy": "^5.0.0",
+      "standard": "^8.1.0",
+      "stylus": "^0.54.5"
+   },
+   "dependencies": {
+      "extract-data-options": "0.0.1",
+      "jquery": "^3.2.1",
+      "jquery-validation": "^1.16.0",
+      "normalize.css": "^4.2.0",
+      "sweetalert2": "^6.5.6"
+   }
+}
